@@ -17,9 +17,14 @@ mongoose.connect(process.env.DB_URL)
 app.post("/menu", async(req,res)=>{
     try{
         const {name,description,price} = req.body
+        const exist = menu.find();
+        if(exist){
+            res.status(400).json({message: "Item already exists"})
+        }else{
         const newItem = new menu({ name, description, price });
         await newItem.save();
         res.status(201).json({ message: "Menu item added", item: newItem });
+        }
     }
     catch(error){
         res.status(500).json({ error: "Server error" });
