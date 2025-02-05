@@ -17,7 +17,7 @@ mongoose.connect(process.env.DB_URL)
 app.post("/menu", async(req,res)=>{
     try{
         const {name,description,price} = req.body
-        const exist = menu.find();
+        const exist = await menu.findOne({name});
         if(exist){
             res.status(400).json({message: "Item already exists"})
         }else{
